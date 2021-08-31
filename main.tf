@@ -16,6 +16,9 @@ resource "azurerm_eventgrid_event_subscription" "event-subscription" {
   name                                 = format("%s%s", lookup(each.value, "name"), var.environment)
   scope                                = lookup(each.value, "scope", null)
   advanced_filtering_on_arrays_enabled = lookup(each.value, "advanced_filtering_on_arrays_enabled", false)
-  azure_function_endpoint              = lookup(each.value, "azure_function_endpoint", {})
-  webhook_endpoint                     = lookup(each.value, "webhook_endpoint", [])
-}
+
+  dynamic "azure_function_endpoint" {
+    function_id                       = lookup(azure_function_endpoint.value "function_id", null)
+    max_events_per_batch              = lookup(azure_function_endpoint.value, "max_events_per_batch" null)
+    preferred_batch_size_in_kilobytes = lookup(azure_function_endpoint.value, "preferred_batch_size_in_kilobytes", null)
+  }
