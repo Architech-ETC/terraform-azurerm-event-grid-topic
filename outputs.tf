@@ -11,3 +11,13 @@ output "event_grid_topics" {
   }
   sensitive = true
 }
+
+output "event_subscriptions" {
+  value = {
+    for sub in azurerm_eventgrid_event_subscription.event-subscription :
+    sub.name => {
+      name = sub.name
+      id   = sub.id
+    }
+  }
+}

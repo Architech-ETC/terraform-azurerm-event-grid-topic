@@ -18,9 +18,31 @@ variable "environment" {
 }
 
 variable "location" {
-  type    = string
+  type = string
 }
 
 variable "resource_group_name" {
-  type    = string
+  type = string
+}
+
+variable "event_subscriptions" {
+  type = list(object({
+    name                                 = string,
+    scope                                = string,
+    advanced_filter                      = list(any),
+    advanced_filtering_on_arrays_enabled = bool,
+    event_delivery_schema                = string,
+    azure_function_endpoint = object({
+      function_id                       = string,
+      max_events_per_batch              = number,
+      preferred_batch_size_in_kilobytes = number
+    }),
+    webhook_endpoint = list(object({
+      url                               = string,
+      max_events_per_batch              = number,
+      preferred_batch_size_in_kilobytes = number,
+      active_directory_app_id_or_uri    = string,
+      active_directory_tenant_id        = string
+    }))
+  }))
 }
