@@ -14,5 +14,5 @@ resource "azurerm_eventgrid_topic" "event-grid-topic" {
 resource "azurerm_eventgrid_event_subscription" "event-subscription" {
   for_each = { for sub in var.event_subscriptions : sub.name => sub }
   name     = format("%s%s", lookup(each.value, "name"), var.environment)
-  scope    = azurerm_eventgrid_topic.event-grid-topic[each.key].id
+  scope    = lookup(each.value, "scope", null)
 }
