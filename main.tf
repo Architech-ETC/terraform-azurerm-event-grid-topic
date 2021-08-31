@@ -12,7 +12,10 @@ resource "azurerm_eventgrid_topic" "event-grid-topic" {
 }
 
 resource "azurerm_eventgrid_event_subscription" "event-subscription" {
-  for_each = { for sub in var.event_subscriptions : sub.name => sub }
-  name     = format("%s%s", lookup(each.value, "name"), var.environment)
-  scope    = lookup(each.value, "scope", null)
+  for_each                             = { for sub in var.event_subscriptions : sub.name => sub }
+  name                                 = format("%s%s", lookup(each.value, "name"), var.environment)
+  scope                                = lookup(each.value, "scope", null)
+  advanced_filtering_on_arrays_enabled = lookup(each.value, "advanced_filtering_on_arrays_enabled", false)
+  azure_function_endpoint              = lookup(each.value, "azure_function_endpoint", {})
+  webhook_endpoint                     = lookup(each.value, "webhook_endpoint", [])
 }
