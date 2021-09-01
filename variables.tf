@@ -37,12 +37,12 @@ variable "event_subscriptions" {
       max_events_per_batch              = number,
       preferred_batch_size_in_kilobytes = number
     }),
-    webhook_endpoint = list(object({
+    webhook_endpoint = object({
       url                               = string,
       max_events_per_batch              = number,
       preferred_batch_size_in_kilobytes = number,
       active_directory_app_id_or_uri    = string,
       active_directory_tenant_id        = string
-    }))
+    })
   }))
 }

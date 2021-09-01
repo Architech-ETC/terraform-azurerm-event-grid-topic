@@ -18,7 +18,11 @@ resource "azurerm_eventgrid_event_subscription" "event-subscription" {
   advanced_filtering_on_arrays_enabled = lookup(each.value, "advanced_filtering_on_arrays_enabled", false)
 
   dynamic "azure_function_endpoint" {
-    function_id                       = lookup(azure_function_endpoint.value "function_id", null)
-    max_events_per_batch              = lookup(azure_function_endpoint.value, "max_events_per_batch" null)
-    preferred_batch_size_in_kilobytes = lookup(azure_function_endpoint.value, "preferred_batch_size_in_kilobytes", null)
+    for_each = lookup(each.value, "azure_function_endpoint", [])
+    content {
+      function_id                       = lookup(each.value, "function_id", null)
+      max_events_per_batch              = lookup(each.value, "max_events_per_batch", null)
+      preferred_batch_size_in_kilobytes = lookup(each.value, "preferred_batch_size_in_kilobytes", null)
+    }
   }
+}
