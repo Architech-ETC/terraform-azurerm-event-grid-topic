@@ -20,8 +20,8 @@ resource "azurerm_eventgrid_event_subscription" "event-subscription" {
   dynamic "azure_function_endpoint" {
     for_each = lookup(each.value, "azure_function_endpoint", [])
     content {
-      function_id                       = lookup(each.value, "function_id", null)
-      max_events_per_batch              = lookup(each.value, "max_events_per_batch", null)
+      function_id                       = lookup(each.value, "function_id", null),
+      max_events_per_batch              = lookup(each.value, "max_events_per_batch", null),
       preferred_batch_size_in_kilobytes = lookup(each.value, "preferred_batch_size_in_kilobytes", null)
     }
   }
