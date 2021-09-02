@@ -11,18 +11,19 @@ resource "azurerm_eventgrid_topic" "event-grid-topic" {
   tags = lookup(each.value, "tags", {})
 }
 
-resource "azurerm_eventgrid_event_subscription" "event-subscription" {
-  for_each                             = { for sub in var.event_subscriptions : sub.name => sub }
-  name                                 = format("%s%s", lookup(each.value, "name"), var.environment)
-  scope                                = lookup(each.value, "scope", null)
-  advanced_filtering_on_arrays_enabled = lookup(each.value, "advanced_filtering_on_arrays_enabled", false)
 
-  dynamic "azure_function_endpoint" {
-    for_each = lookup(each.value, "azure_function_endpoint", [])
-    content {
-      function_id                       = lookup(each.value, "function_id", null),
-      max_events_per_batch              = lookup(each.value, "max_events_per_batch", null),
-      preferred_batch_size_in_kilobytes = lookup(each.value, "preferred_batch_size_in_kilobytes", null)
-    }
+resource "azurerm_eventgrid_event_subscription" "event-subscription" {
+  for_each                             = var.event_subscriptions
+  name                                 = format("%s%s", each.key, var.environment)
+  scope                                = each.value["scope"]
+  advanced_filtering_on_arrays_enabled = each.value["advanced_filtering_on_arrays_enabled"]
+  event_delivery_schema                = each.value["event_delivery_schema"]
+  azure_function_endpoint {
+    function_id          = each.value["azure_function_endpoint"].function_id
+    max_events_per_batch = each.value["azure_function_endpoint"].max_events_per_batch
   }
 }
+
+
+
+

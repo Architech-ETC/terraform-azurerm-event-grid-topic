@@ -9,7 +9,7 @@ variable "event_grid_topics" {
 
 variable "environment" {
   type        = string
-  description = "Specifies the environment of the Bastion Host. Changing this forces a new resource to be created."
+  description = "Specifies the environment of the Event Grid Topic. Changing this forces a new resource to be created."
 
   validation {
     condition     = contains(["sandbox", "dev", "qa", "preprod", "prod"], var.environment)
@@ -26,23 +26,14 @@ variable "resource_group_name" {
 }
 
 variable "event_subscriptions" {
-  type = list(object({
-    name                                 = string,
-    scope                                = string,
-    advanced_filter                      = list(any),
-    advanced_filtering_on_arrays_enabled = bool,
-    event_delivery_schema                = string,
+  type = map(object({
+    scope                                = string
+    event_delivery_schema                = string
+    advanced_filtering_on_arrays_enabled = bool
     azure_function_endpoint = object({
-      function_id                       = string,
-      max_events_per_batch              = number,
+      function_id                       = string
+      max_events_per_batch              = number
       preferred_batch_size_in_kilobytes = number
-    }),
-    webhook_endpoint = object({
-      url                               = string,
-      max_events_per_batch              = number,
-      preferred_batch_size_in_kilobytes = number,
-      active_directory_app_id_or_uri    = string,
-      active_directory_tenant_id        = string
     })
   }))
 }
