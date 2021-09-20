@@ -12,8 +12,8 @@ variable "environment" {
   description = "Specifies the environment of the Event Grid Topic. Changing this forces a new resource to be created."
 
   validation {
-    condition     = contains(["sandbox", "dev", "qa", "preprod", "prod"], var.environment)
-    error_message = "The environment must be one of the specified values sandbox, dev, qa, preprod, prod."
+    condition     = contains(["sandbox", "dev", "qa", "preprod", "bat", "prod"], var.environment)
+    error_message = "The environment must be one of the specified values sandbox, dev, qa, preprod, bat, prod."
   }
 }
 
