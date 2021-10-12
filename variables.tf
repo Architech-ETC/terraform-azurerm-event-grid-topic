@@ -30,6 +30,7 @@ variable "event_subscriptions" {
     scope                                = string
     event_delivery_schema                = string
     advanced_filtering_on_arrays_enabled = bool
+    included_event_types                 = list(string)
     azure_function_endpoint = object({
       function_id                       = string
       max_events_per_batch              = number

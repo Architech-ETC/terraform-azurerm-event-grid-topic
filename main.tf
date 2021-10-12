@@ -18,6 +18,7 @@ resource "azurerm_eventgrid_event_subscription" "event-subscription" {
   scope                                = each.value["scope"]
   advanced_filtering_on_arrays_enabled = each.value["advanced_filtering_on_arrays_enabled"]
   event_delivery_schema                = each.value["event_delivery_schema"]
+  included_event_types                 = each.value["included_event_types"]
   azure_function_endpoint {
     function_id                       = each.value["azure_function_endpoint"].function_id
     max_events_per_batch              = each.value["azure_function_endpoint"].max_events_per_batch
